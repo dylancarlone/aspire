@@ -60,6 +60,8 @@ npm install
 
 Update `DATABASE_URL` in `server/.env` to point to your database.
 
+e.g. `DATABASE_URL="postgresql://user@localhost:5432/aspire?schema=public"`
+
 ---
 
 ## 5. Prisma Setup
@@ -122,14 +124,33 @@ Note: This can be tricky depending on the node environment is set up locally, so
 
 ---
 
-## 9. Additional Notes
+## 8. Implementation Notes & Trade-offs
+
+- The backend uses a minimal TypeScript setup for rapid development; some type safety and structure could be improved for production. I also made some quick decisions in the tsconfig file to get TypeScript up and running quickly with expected file imports
+- Prisma is used for database access and migrations for simplicity and type safety, though totally overkill for this example - knex would suffice for the limited database access in this project so far
+- The cron job is implemented as a simple script for ease of demonstration, but a more robust job/queue system is recommended for production (e.g. BullMQ or another queue sytem)
+- Error handling and validation are basic and could certainly be expanded for a production environment, using Formik to handle form state
+- Authentication is limited to GitHub token usage for API access; no user authentication is implemented yet, but could implement GitHub OAuth login
+
+---
+
+## 9. Suggestions for Future Improvements
+
+- Add comprehensive error handling and input validation on both client and server (e.g. Yup / better Apollo validation handling/messaging)
+- Implement user authentication and authorization.
+- Add unit/integration tests where it makes sense, probably on API code first
+- Refactor server code for better modularity and callability outside of GraphQL flow
+
+---
+
+## 10. Additional Notes
 
 - TypeScript setup in the server is minimal for quick start; consider refining exports and structure for production.
 - Logs from the cron job are written to `server/cron.log`.
 
 ---
 
-## 10. Troubleshooting
+## 11. Troubleshooting
 
 - If you encounter issues with Prisma, try `npx prisma generate` and `npx prisma migrate dev` again.
 - Ensure your environment variables are set correctly.
